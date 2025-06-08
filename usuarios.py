@@ -50,7 +50,7 @@ usuarios = [
 
 
 def iniciar_sesion():
-    """Permite que iniciar sesion"""
+    """Permite iniciar sesion"""
     email = validar_email()
     contraseña = input("Contraseña:")
 
@@ -74,14 +74,26 @@ def registrar_usuario():
         rol (str): rol del usuario ('admin' o 'estandar')
 
     Returns:
-        dict: usuario recién creado.
+        dict: usuario recién creado. None si existe algún error.
     """
     print("\n<<< Registro de usuario >>>")
     
     nombre = input("Nombre: ")
     apellido = input("Apellido: ")
-    email = validar_email()
-    contraseña = input("Contraseña: ")
+
+    while True:
+        email = validar_email()
+        if any(usuario["email"] == email for usuario in usuarios):
+            print("\nError: Este email ya se encuentra registrado.")
+        else:
+            break
+
+    while True:
+        contraseña = input("Contraseña (ingresa mínimo 6 caracteres): ")
+        if len(contraseña) >= 6:
+            break
+        print("\nError: la contraseña debe tener al menos 6 caracteres.")
+
     rol = validar_rol()
 
     nuevo_usuario = {'nombre': nombre, 'apellido': apellido, 'email': email, 'contraseña': contraseña, 'rol': rol}
@@ -90,11 +102,18 @@ def registrar_usuario():
     print(f"\nUsuario registrado: {nuevo_usuario['nombre']} {nuevo_usuario['apellido']} ({nuevo_usuario['rol']})")
     return nuevo_usuario
 
-
-
-
 def modificar_usuario(admin):
-    """Para que solo los administradores puedan modificar a otors usuarios"""
+    """Permite que los administradores puedan modificar usuarios estándar
+    
+    Parameters:
+        admin (dict): Usuario administrador que realiza la acción.
+
+    Returns:
+        - muestra usuarios y permite seleccionar 1 p/editar.
+        - valida que el nuevo email no este en uso.
+        - valida que la nueva contraseña tenga minimo 6 caracteres.
+        - no permite modificar usuarios administradores.   
+    """
     if admin["rol"] != "admin":
         print("\nError: Solo los administradores pueden modificar usuarios.")
         return
@@ -102,18 +121,36 @@ def modificar_usuario(admin):
     print("\nUsuarios:")
     mostrar_usuarios()
 
-    id_usuario = int(input("Elgi el numero del usuario a cambiar: ")) -1
+    id_usuario = int(input("Elegi el número del usuario a editar: ")) - 1
 
     if 0 <= id_usuario < len(usuarios) and usuarios[id_usuario]["rol"] == "estandar":
-        usuarios[id_usuario]["nombre"] = input ("Nuevo nombre: ")
-        usuarios[id_usuario]["email"] = input ("Nuevo mail: ")
-        usuarios[id_usuario]["contraseña"] = input ("Nueva contraseña: ")
-        print ("\nUsuario modificado")
+        nuevo_nombre = input("Nuevo nombre: ")
+        nuevo_apellido = input("Nuevo apellido: ")
+        nuevo_email = validar_email()
+
+        for i, usuario in enumerate(usuarios):
+            if i != id_usuario and usuario["email"] == nuevo_email:
+                print("\nError: Este email ya se encuentra registrado.")
+                return
+        
+        while True:
+            nueva_contraseña = input("Nueva contraseña: ")
+            if len(nueva_contraseña) >= 6:
+                break
+            print("\nError: La contraseña debe tener al menos 6 caracteres.")
+
+        # Asignar nuevos valores
+        usuarios[id_usuario]["nombre"] = nuevo_nombre
+        usuarios[id_usuario]["apellido"] = nuevo_apellido
+        usuarios[id_usuario]["email"] = nuevo_email
+        usuarios[id_usuario]["contraseña"] = nueva_contraseña
+
+        print("\nUsuario modificado con éxito")
     else:
-        print ("\nNo se puede modificar admins")
+        print("\nError: No se puede modificar a un usuario Administrador o el número es inválido")
 
 def eliminar_usuario(admin):
-    """para que solo los admins puedan borrar usuarios"""
+    """Solo los admins pueden borrar usuarios"""
     if admin["rol"] != "admin":
         print("\nError: Solo un administrador puede eliminar usuarios.")
         return
