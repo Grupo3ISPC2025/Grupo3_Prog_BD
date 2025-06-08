@@ -4,12 +4,14 @@
 
 
 def validar_email():
-    """Verificacion de mail, tiene que ser si o si '@gmail.com'"""
+    """Verificacion de mail, solo se permite los siguientes dominios: @gmail.com - @outlook.com - @hotmail.com"""
+    dominios_validos = ["@gmail.com", "@outlook.com", "@hotmail.com"]
     while True:
         email = input("Email: ").strip()
-        if "@gmail.com" in email:
-            return email 
-        print("\nError: El mail debe contener '@gmail.com' ")
+        for dominio in dominios_validos:
+            if email.endswith(dominio):
+                return email
+        print("\nError: el email debe finalizar con un dominio válido")
 
 def validar_rol():
     """Verificacion de rol, solo puede ser admin o estandar"""
