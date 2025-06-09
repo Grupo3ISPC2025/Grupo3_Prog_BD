@@ -1,12 +1,12 @@
 # main.py --> menú e interaccion con usuario
 
 from usuarios import registrar_usuario, mostrar_usuarios, iniciar_sesion, modificar_usuario, eliminar_usuario
-"""from auth import validar_email, validar_rol """
+from auth import validar_email, validar_rol
 
-def imprimir_usuarios():    
-    print("\nUsuarios Registrados:")
+def imprimir_usuarios(): 
+    print("\nUsuarios Registrados: ")
     for indice_usuario, usuario in enumerate(mostrar_usuarios(), 1):
-        print(f"{indice_usuario}. {usuario['nombre']} {usuario['apellido']} - {usuario['email']} ({usuario['rol']})")
+        print(f"{indice_usuario}. {usuario.nombre} {usuario.apellido} - {usuario.email} ({usuario.rol})")
 
 
 def registrar_usuarios():
@@ -17,36 +17,22 @@ def main():
     print("<<< Bienvenidos a Portfolio Inteligente >>>")
 
     while True:
-        print("\nEligir una opción:")
+        print("\nElegir una opción:")
         print("1. Mostrar usuarios")
         print("2. Registrar nuevo usuario")
-        print("3. Iniciar sesion")
+        print("3. Iniciar sesión")
         print("4. Salir")
 
         opcion = input("Ingrese el número de la opción: ").strip()
 
         if opcion == '1':
             mostrar_usuarios()
+
         elif opcion == '2':
             registrar_usuario()
+
         elif opcion == '3':
             usuario = iniciar_sesion()
-<<<<<<< Updated upstream
-            if usuario and usuario["rol"] == "admin":
-                print("\nSos Administrador:")
-                print("1. Modificar usuarios")
-                print("2. Eliminar usuarios")
-                print("3. Ver usuarios")
-                print("4. Salir")
-                
-                opciones_de_admin = input ("Seleccionar una opcion: ").strip()
-                if opciones_de_admin == '1':
-                    modificar_usuario(usuario)
-                elif opciones_de_admin == '2':
-                    eliminar_usuario(usuario)
-                elif opciones_de_admin == '3':
-                    mostrar_usuarios()
-=======
             if usuario:
                 if usuario.rol == "admin":
                     while True:
@@ -89,13 +75,13 @@ def main():
 
             else:
                 print("No se pudo iniciar sesión, vuelva a intentar!")
->>>>>>> Stashed changes
 
         elif opcion == '4':
-            print("Estás saliendo del programa...")
+            print("Usted esta saliendo del programa")
             break
+
         else:
-            print("Error, por favor elegí entre 1, 2, 3 o 4.")
+            print("Error, por favor selecciona entre las opciones: 1, 2, 3 o 4")
 
     print("Cerrando programa. Vuelva pronto!")
 
