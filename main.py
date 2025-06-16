@@ -3,37 +3,7 @@
 from usuarios import registrar_usuario, mostrar_usuarios, iniciar_sesion, modificar_usuario, eliminar_usuario
 from auth import validar_email, validar_rol
 
-def imprimir_usuarios():
-    """
-    Imprime lista de usuarios registrados con info básica
-
-    Cada usuario se enumera con:
-        - indice_usuario (int): representaria el num secuencial del usuario en la lista (o posicion)
-        - usuario (dict): contiene nombre, apellido, email y rol del usuario.
-
-    Ej de salida:
-        3. Gloria López - gloria@gmail.com (estandar)
-    """    
-    print("\nUsuarios Registrados:")
-    for indice_usuario, usuario in enumerate(mostrar_usuarios(), 1):
-        print(f"{indice_usuario}. {usuario['nombre']} {usuario['apellido']} - {usuario['email']} ({usuario['rol']})")
-
-
 def registrar_usuarios():
-
-    """
-    Crea un nuevo usuario y lo agrega a lista de usuarios
-
-    Parameters:
-        nombre (input): nombre del usuario
-        apellido (input): apellido del usuario
-        email (input): email del usuario
-        contraseña (input): contraseña del usuario
-        rol (input): rol del usuario ('admin' o 'estandar')
-
-    Returns:
-        dict: nuevo usuario registrado.
-    """
     print("\n<<< Registrar nuevo usuario >>>")
     nuevo_usuario = registrar_usuario() 
 
@@ -58,7 +28,7 @@ def main():
         elif opcion == '3':
             usuario = iniciar_sesion()
             if usuario:
-                if usuario["rol"] == "admin":
+                if usuario.rol == "admin":
                     while True:
                         print("\n<<<  Menú Administrador  >>>")
                         print("1. Modificar usuarios")
@@ -82,7 +52,7 @@ def main():
 
                 else:
                     while True:
-                        print(f"\nSesión iniciada como: {usuario['nombre']} ({usuario['rol']})")
+                        print(f"\nSesión iniciada como: {usuario.nombre} ({usuario.rol})")
                         print("Opciones disponibles:")
                         print("1. Ver usuarios")
                         print("2. Cerrar sesión")
